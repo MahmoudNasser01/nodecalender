@@ -33,6 +33,24 @@ document.getElementById("app").innerHTML = `
 </div>
 `;
 
+const myPost = [
+  {
+    id:1,
+    title:"task_1",
+    publish_time:"2022:11:3",
+    published:false,
+    platforms:['linkedin', 'facebook', 'instagram']
+  },
+
+  {
+    id:2,
+    title:"task_2",
+    publish_time:"2022:11:3",
+    published:true,
+    platforms:['linkedin']
+  }
+]
+
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const TODAY = dayjs().format("YYYY-MM-DD");
 
@@ -82,6 +100,13 @@ function createCalendar(year = INITIAL_YEAR, month = INITIAL_MONTH) {
 }
 
 function appendDay(day, calendarDaysElement) {
+  const today_posts = myPost.filter((post)=>{
+    let list = post.publish_time.split(':');
+    return list[list.length-1] == day.dayOfMonth;
+    
+  });
+
+
   const dayElement = document.createElement("li");
   const dayElementClassList = dayElement.classList;
   dayElementClassList.add("calendar-day");
@@ -96,6 +121,16 @@ function appendDay(day, calendarDaysElement) {
 
   if (day.date === TODAY) {
     dayElementClassList.add("calendar-day--today");
+  }
+
+  if (today_posts.length){
+    let body = `<br><br>`;
+    today_posts.forEach((post)=>{
+        body += `
+        <p>${post.title}</p>
+        `
+    })
+   dayElement.innerHTML += body;
   }
 }
 
